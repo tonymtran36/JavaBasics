@@ -35,7 +35,10 @@ public class AsgnmntTwo {
 		int attempts = 0;
 
 		while (attempts < 5) {
+			if (!scan.hasNextInt()) { break;}
 			int guess = scan.nextInt();
+			if ( guess<1 || guess>100) { break;}
+			
 			if ( (guess >= randomNum - 10) && (guess <= randomNum + 10) ) {
 				System.out.println("The answer is " + randomNum);
 				break;
