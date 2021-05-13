@@ -13,7 +13,7 @@ import java.util.Scanner;
  */
 public class AsgnmntOne {
 
-	public void printFilesAndDir(File directory) throws NullPointerException{
+	public void printFilesAndDir(File directory) {
 		
 		try {
 			String[] filenames = directory.list();
@@ -43,15 +43,8 @@ public class AsgnmntOne {
 		String pathname = scan.next();
 
 		AsgnmntOne printer = new AsgnmntOne();
-		try {
 		printer.printFilesAndDir(new File(pathname));
-		}
-		catch (NullPointerException e ) {
-			e.printStackTrace();
-		}
-		finally {
-			scan.close();
-		}
+		scan.close();
 	}
 
 }
