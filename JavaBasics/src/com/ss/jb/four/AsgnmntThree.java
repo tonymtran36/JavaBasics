@@ -53,11 +53,11 @@ public class AsgnmntThree {
 		List<Integer> productBuffer = new ArrayList<Integer>();
 		AsgnmntThree manager = new AsgnmntThree();
 		
-		for(int i = 0; i<4;i++) { //populate the buffer
-			productBuffer.add(i);
-		}
-		Thread producer = new Thread(new Runnable() {
-		//Runnable producer = new Runnable() {
+//		for(int i = 0; i<4;i++) { //populate the buffer
+//			productBuffer.add(i);
+//		}
+		//Thread producer = new Thread(new Runnable() {
+		Runnable producer = new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -66,10 +66,10 @@ public class AsgnmntThree {
 					e.printStackTrace();
 				}
 			}
-		});
+		};
 		
-		Thread consumer = new Thread(new Runnable() {
-		//Runnable consumer = new Runnable() {
+		//Thread consumer = new Thread(new Runnable() {
+		Runnable consumer = new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -78,13 +78,15 @@ public class AsgnmntThree {
 					e.printStackTrace();
 				}
 			}
-		});
+		}; 
 		
-		producer.start();
-		consumer.start();
+		producer.run();
+		consumer.run();
+		//producer.start();
+		//consumer.start();
 		
-		producer.join();
-		consumer.join();
+		//producer.join();
+		//consumer.join();
 //		new Thread(producer).start();
 //		new Thread(consumer).start();
 	}
