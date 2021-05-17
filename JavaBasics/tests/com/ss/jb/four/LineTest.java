@@ -21,7 +21,6 @@ public class LineTest {
 	public ExpectedException ex = ExpectedException.none();
 	@Test
 	public void getSlopeExceptionTest() {
-		
 		ex.expect(ArithmeticException.class);
 		l2.getSlope();
 	}

@@ -13,36 +13,27 @@ import java.util.List;
  *
  */
 public class AsgnmntThree {
-	List<Integer> productBuffer;
-	public void produce(List<Integer> productBuffer) throws InterruptedException {
-		int nProd = 0;
-		while (true) {
-			synchronized (productBuffer) {
-				while (productBuffer.size() > 4) { // producers wait for consumers
-					productBuffer.wait();
-				}
-				System.out.println("The producer produced this: " + nProd);
-				productBuffer.add((nProd++));
-				
-				productBuffer.notify();
+	static List<Integer> productBuffer;
+	public static int nProd = 0;
+	public void produce() throws InterruptedException {
+		
+		synchronized (productBuffer) {
+			if (productBuffer.size() > 3) { //Too many products, consumers need to take some
 				Thread.sleep(100);
 			}
 		}
+		System.out.println("The producer produced this: " + nProd);
+		productBuffer.add(nProd++);
 	}
 
-	public void consume(List<Integer> products) throws InterruptedException {
-		while (true) {
-			synchronized (products) {
-				while (products.size() < 1) { // consumers should wait for producers
-					productBuffer.wait();
-				}
-				System.out.println("The consumer consumed this: " + products.get(0));
-				products.remove(0);
-				
-				productBuffer.notify();
+	public void consume() throws InterruptedException {
+		synchronized (productBuffer) {
+			if (productBuffer.size() < 1) { // too full
 				Thread.sleep(100);
 			}
 		}
+		System.out.println("The consumer consumed this: " + productBuffer.get(0));
+		productBuffer.remove(0);
 	}
 	/**
 	 * @param args
@@ -50,45 +41,41 @@ public class AsgnmntThree {
 	 */
 	public static void main(String[] args) throws InterruptedException {
 
-		List<Integer> productBuffer = new ArrayList<Integer>();
+		productBuffer = new ArrayList<Integer>();
 		AsgnmntThree manager = new AsgnmntThree();
-		
-//		for(int i = 0; i<4;i++) { //populate the buffer
-//			productBuffer.add(i);
-//		}
-		//Thread producer = new Thread(new Runnable() {
-		Runnable producer = new Runnable() {
+
+		Thread producer = new Thread(new Runnable() {
+		//Runnable producer = new Runnable() {
 			@Override
 			public void run() {
 				try {
-					manager.produce(productBuffer);
+					while(true) {
+						manager.produce();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		};
+		});
 		
-		//Thread consumer = new Thread(new Runnable() {
-		Runnable consumer = new Runnable() {
+		Thread consumer = new Thread(new Runnable() {
+		//Runnable consumer = new Runnable() {
 			@Override
 			public void run() {
 				try {
-					manager.consume(productBuffer);
+					while(true) {
+						manager.consume();
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		}; 
-		
-		producer.run();
-		consumer.run();
-		//producer.start();
-		//consumer.start();
+		}); 
+		producer.start();
+		consumer.start();
 		
 		//producer.join();
 		//consumer.join();
-//		new Thread(producer).start();
-//		new Thread(consumer).start();
 	}
 
 }
